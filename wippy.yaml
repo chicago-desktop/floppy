@@ -1,0 +1,14 @@
+organization: chicago
+module: floppy
+description: Virtual floppy drive with temporary executable WAPP mounts.
+license: MIT
+exclude_meta:
+  type: [test]
+# The harness owns app:* services and bindings; it is not part of the module.
+exclude:
+  - "test/**"
+  - "test:**"
+  - "app:**"
+  - "app.env:**"
+  - ".wippy/**"
+  - "wippy.lock"

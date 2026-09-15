@@ -1,0 +1,5 @@
+.wippy/
+wippy.lock
+test/.wippy/
+test/wippy.lock
+test/shots/*.png

@@ -1,0 +1,74 @@
+version: "1.0"
+namespace: chicago.floppy
+entries:
+  - name: definition
+    kind: ns.definition
+    readme: file://docs/authoring.md
+    meta: {title: Floppy Drive}
+  - name: shell
+    kind: ns.dependency
+    component: github.com/chicago-desktop/shell
+    version: ">=0.2.5"
+  - name: disks
+    kind: fs.directory
+    base: module
+    directory: ./disks
+    auto_init: false
+  - name: window
+    kind: process.lua
+    source: file://window.lua
+    method: main
+    meta:
+      type: tui_desktop.window
+      title: 3 1/2 Floppy (A:)
+      image: drive
+      in_menu: false
+      requires: chicago.admin
+      width: 64
+      height: 24
+      resizable: true
+      pixel_render: chicago.shell.sdk:render
+      pixel_state: chicago.floppy:window
+    modules: [hub, fs, registry, uuid, funcs]
+    imports:
+      app: chicago.shell.sdk:app
+      session: chicago.floppy:session
+    security:
+      policies: [chicago.shell.security:view_state, chicago.floppy:disk_access, chicago.floppy:package_access, chicago.floppy:overlay_access]
+  - name: disk_access
+    kind: security.policy
+    policy:
+      effect: allow
+      actions: [fs.get]
+      resources: ["chicago.floppy:disks"]
+  - name: package_access
+    kind: security.policy
+    policy:
+      effect: allow
+      actions: [hub.open]
+      resources: ["*.wapp"]
+  - name: drive
+    kind: registry.entry
+    meta:
+      type: chicago.drive
+      title: 3 1/2 Floppy (A:)
+      image: drive
+      order: 10
+    data:
+      entry: chicago.floppy:window
+
+  - name: model
+    kind: library.lua
+    source: file://model.lua
+  - name: session
+    kind: library.lua
+    source: file://session.lua
+    modules: [hub, registry, uuid, funcs]
+    imports:
+      model: chicago.floppy:model
+  - name: overlay_access
+    kind: security.policy
+    policy:
+      effect: allow
+      actions: [funcs.call, registry.overlay.get, registry.overlay.apply, registry.overlay.create.function.lua, registry.overlay.delete.function.lua]
+      resources: ["chicago.floppy:*", "chicago.floppy.disk_*:*"]
