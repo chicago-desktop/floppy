@@ -8,7 +8,7 @@ entries:
   - name: shell
     kind: ns.dependency
     component: github.com/chicago-desktop/shell
-    version: ">=0.3.3"
+    version: ">=0.3.4"
   - name: disks
     kind: fs.directory
     base: module

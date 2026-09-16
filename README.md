@@ -1,7 +1,7 @@
 # chicago/floppy
 
 An executable virtual floppy prototype, exposed as A: through the shell's
-`chicago.drive` registry contract. Requires shell v0.3.3 or newer and the runtime
+`chicago.drive` registry contract. Requires shell v0.3.4 or newer and the runtime
 with `hub.open(fs, path)` and `registry.overlay(owner)`.
 
 ## Try it
@@ -70,6 +70,9 @@ make demo
 make test WIPPY=/path/to/runtime/with/local-wapp-support
 make lint WIPPY=/path/to/runtime/with/local-wapp-support
 ```
+
+The harness replaces only Floppy. Shell and tui-desktop are installed from
+published tags, so layout tests exercise the SDK version users receive.
 
 The standalone harness verifies the full timed wizard through button clicks in a real
 window process, reading resources, execution, per-mount isolation, cleanup,
