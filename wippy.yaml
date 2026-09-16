@@ -12,3 +12,7 @@ exclude:
   - "app.env:**"
   - ".wippy/**"
   - "wippy.lock"
+
+embed:
+  - chicago.floppy:images
+  - chicago.floppy:disks

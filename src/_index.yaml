@@ -9,6 +9,12 @@ entries:
     kind: ns.dependency
     component: github.com/chicago-desktop/shell
     version: ">=0.3.4"
+  - name: images
+    kind: fs.directory
+    meta: {type: chicago.images}
+    base: module
+    directory: ./assets/images
+    auto_init: false
   - name: disks
     kind: fs.directory
     base: module
@@ -24,8 +30,8 @@ entries:
       image: floppy
       in_menu: false
       requires: chicago.admin
-      width: 64
-      height: 24
+      width: 54
+      height: 22
       resizable: true
       pixel_render: chicago.shell.sdk:render
       pixel_state: chicago.floppy:window
@@ -59,6 +65,31 @@ entries:
     data:
       entry: chicago.floppy:window
 
+  - name: program
+    kind: process.lua
+    source: file://program.lua
+    method: main
+    modules: [funcs, gfx, base64, json]
+    imports:
+      app: chicago.shell.sdk:app
+    security:
+      policies: [chicago.shell.security:view_state, chicago.floppy:program_access]
+    meta:
+      type: tui_desktop.window
+      title: Disk program
+      image: program
+      in_menu: false
+      window_type: tool
+      width: 58
+      height: 24
+      pixel_render: chicago.shell.sdk:render
+      pixel_state: chicago.floppy:program
+  - name: program_access
+    kind: security.policy
+    policy:
+      effect: allow
+      actions: [funcs.call]
+      resources: ["chicago.floppy.disk_*:*"]
   - name: setup
     kind: library.lua
     source: file://setup.lua
@@ -68,9 +99,10 @@ entries:
   - name: session
     kind: library.lua
     source: file://session.lua
-    modules: [hub, registry, uuid, funcs]
+    modules: [hub, registry, uuid, funcs, json]
     imports:
       model: chicago.floppy:model
+      desktop: chicago.tui_desktop.desktop:window_api
   - name: overlay_access
     kind: security.policy
     policy:

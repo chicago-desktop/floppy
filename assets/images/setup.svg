@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="224" viewBox="0 0 120 224" shape-rendering="crispEdges">
+<rect width="120" height="224" fill="#55a6a8"/>
+<g stroke="#404040" stroke-width="1" stroke-linejoin="miter">
+<path d="M20 35 L46 22 L104 38 L79 51Z" fill="#efefef"/>
+<path d="M79 51 L104 38 L104 97 L79 111Z" fill="#808080"/>
+<path d="M20 35 L79 51 L79 111 L20 94Z" fill="#c0c0c0"/>
+<path d="M28 46 L69 57 L69 94 L28 83Z" fill="#808080"/>
+<path d="M31 50 L65 59 L65 88 L31 79Z" fill="#004040"/>
+<path d="M35 55 L59 62 L59 81 L35 74Z" fill="#00a0a0"/>
+<path d="M42 60 L53 63 L53 77 L42 74Z" fill="#ffffff"/>
+<path d="M42 60 L53 63 L53 66 L42 63Z" fill="#000080"/>
+<path d="M40 101 L60 107 L60 118 L40 112Z" fill="#808080"/>
+<path d="M13 114 L41 100 L104 119 L77 135Z" fill="#e0e0e0"/>
+<path d="M77 135 L104 119 L104 138 L77 154Z" fill="#808080"/>
+<path d="M13 114 L77 135 L77 154 L13 133Z" fill="#c0c0c0"/>
+<path d="M23 123 L47 131 L47 134 L23 126Z" fill="#202020"/>
+<path d="M55 133 L67 137 L67 140 L55 136Z" fill="#303030"/>
+<path d="M18 129 L21 130 L21 133 L18 132Z" fill="#00d000" stroke="none"/>
+<path d="M16 161 L45 145 L73 155 L45 172Z" fill="#e0e0e0"/>
+<path d="M16 161 L45 172 L45 189 L16 178Z" fill="#909090"/>
+<path d="M45 172 L73 155 L73 171 L45 189Z" fill="#606060"/>
+<path d="M24 161 L42 151 L60 157 L42 168Z" fill="#ffffff"/>
+<path d="M24 161 L42 168 L42 172 L24 165Z" fill="#000080"/>
+<path d="M77 178 L93 168 L107 173 L91 184Z" fill="#c0c0c0"/>
+<path d="M77 178 L91 184 L91 188 L77 182Z" fill="#606060"/>
+<path d="M91 184 L107 173 L107 178 L91 188Z" fill="#808080"/>
+<path d="M82 176 L92 170 L102 174 L92 180Z" fill="#ffffff"/>
+<path d="M48 202 L64 192 L78 197 L62 208Z" fill="#c0c0c0"/>
+<path d="M48 202 L62 208 L62 212 L48 206Z" fill="#606060"/>
+<path d="M62 208 L78 197 L78 201 L62 212Z" fill="#808080"/>
+<path d="M53 200 L63 194 L73 198 L63 204Z" fill="#ffffff"/>
+</g></svg>

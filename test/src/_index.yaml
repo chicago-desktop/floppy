@@ -112,3 +112,17 @@ entries:
       ui: chicago.shell.sdk:ui
       render: chicago.shell.sdk:render
       rasters: chicago.shell.theme:rasters
+
+  - name: ski_test
+    kind: function.lua
+    source: file://ski_test.lua
+    method: run
+    meta: {type: test, suite: chicago_floppy, group: Ski}
+    modules: [fs, gfx, base64, registry, funcs, uuid, hub, tty, process, channel, time, json]
+    imports:
+      test: wippy.test:test
+      session: chicago.floppy:session
+      program: chicago.floppy:program
+      ui: chicago.shell.sdk:ui
+      render: chicago.shell.sdk:render
+      rasters: chicago.shell.theme:rasters

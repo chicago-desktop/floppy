@@ -10,7 +10,7 @@ entries:
       order: 200
       title: "Try a floppy disk"
     data:
-      text: "Open My Computer and then 3½ Floppy (A:). In the prototype, choose hello.wapp and click Insert to read its label and README. Opening the drive requires an administrator account."
+      text: "Open My Computer and then 3½ Floppy (A:). In the prototype, choose ski.wapp and click Insert to read its label and README. Opening the drive requires an administrator account."
       image: floppy
       open: chicago.floppy:window
   - name: run
@@ -40,6 +40,6 @@ entries:
       order: 230
       title: "Small programs, one disk"
     data:
-      text: "The floppy prototype runs standalone Lua functions from WAPP files. It does not yet install full desktop applications. Agents can find the authoring guide in the readme of chicago.floppy:definition."
+      text: "Try Ski from ski.wapp: Left and Right steer, Space pauses, and R starts a new run. The game lives on the disk, which must stay inserted. Agents can find the authoring guide in the readme of chicago.floppy:definition."
       image: floppy
       open: chicago.floppy:window

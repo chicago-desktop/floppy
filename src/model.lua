@@ -22,7 +22,8 @@ function model.prepare(entries: any, namespace: string): (any, any)
         if not name or seen[name] then return nil, "Invalid or duplicate entry name." end
         seen[name] = true
         out[#out + 1] = {id = namespace .. ":" .. name, kind = "function.lua", data = data,
-            meta = {title = tostring((item.meta or {}).title or name)}}
+            meta = {title = tostring((item.meta or {}).title or name),
+                floppy_window = (item.meta or {}).floppy_window == "canvas.v1" and "canvas.v1" or nil}}
     end
     return out, nil
 end

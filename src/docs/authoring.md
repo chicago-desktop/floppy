@@ -118,3 +118,40 @@ until runtime restart. Permanent installation is not implemented.
 
 For module changes run `make test` and `make lint` with a compatible runtime.
 Keep this guide aligned with `src/model.lua` and `src/session.lua`.
+
+## Window programs: canvas.v1
+
+A standalone function can opt into a window by setting entry metadata
+`floppy_window: canvas.v1`. The source still has no imports or runtime modules.
+The drive opens the trusted `chicago.floppy:program` host and calls your function
+with `{event, state}`. `state` is the previous response's plain serializable
+`state`, or nil initially. Each window has its own state.
+
+Events include `init`, `tick` (80 ms while active), `key` and `activate`.
+Button actions are `pause` and `restart`. Return:
+
+```lua
+return {
+    state = {score = 0},
+    canvas = {
+        width = 384, height = 256,
+        rects = {{x = 10, y = 10, w = 8, h = 12, color = "#008080"}},
+    },
+    active = true,
+    status = "Left / Right to steer",
+    score = "0 m", lives = 3, best = 0,
+}
+```
+
+The canvas has a white background. At most 1,024 integer rectangle commands are
+accepted; dimensions and coordinates are bounded by the host. Use hex RGB colors.
+Inactive frames stop ticking and show Start / Resume and New Run buttons.
+Optional `can_resume = false` disables Start / Resume after a game ends. Active
+frames use keyboard controls without focusable buttons intercepting game keys.
+Calls must finish promptly, as with ordinary disk functions. Invalid frames
+show an error in the game window.
+
+See `examples/ski.lua` and `tools/ski.go` for the complete bundled game and builder.
+The host tracks windows per mount. Eject requests their closure and waits for
+confirmation before deleting registry entries. The game never restarts the
+computer or installs itself permanently on C:.

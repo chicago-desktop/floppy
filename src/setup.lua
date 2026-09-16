@@ -22,14 +22,10 @@ function setup.progress(wizard: any, now: number): boolean
     return elapsed>=setup.COPY_MS+setup.HOLD_MS
 end
 local function label(text: any,size: integer): any
-    return {kind="label",text=tostring(text or ""),size=size,wrap=true}
+    return {kind="label",text=tostring(text or ""),size=size,size_px=size*16,wrap=true}
 end
 local function heading(text: string): any
     return {kind="picture",text=text,size=2,size_px=32}
-end
-local function icon(name: string): any
-    return {kind="row",size=4,size_px=74,children={
-        {kind="label",text=""},{kind="image",image=name,icon="▣",size=4,size_px=32},{kind="label",text=""}}}
 end
 local function button(id: string,text: string,disabled: boolean,default: boolean): any
     return {kind="button",id=id,text=text,disabled=disabled,default=default,size=10,size_px=81,width_px=75}
@@ -37,35 +33,34 @@ end
 function setup.view(w: any, source: any): any
     local content={}
     if w.stage=="welcome" then
-        content={heading("Welcome to the Wippy Setup Wizard"),label("This wizard will guide you through setting up "..w.name..".",4),
-            label("It is recommended that you close other applications before continuing.",3),
-            label("Click Next to continue, or Cancel to exit Setup.",3),
-            label("Disk programs remain available until this disk is ejected.",2)}
+        content={heading("Welcome to Wippy Setup"),label("This wizard will guide you through setting up "..w.name..".",3),
+            label("Before continuing, close any other applications you are running.",3),
+            label("To continue, click Next.",2)}
     elseif w.stage=="destination" then
-        content={heading("Choose Destination Location"),label("Setup will use the following destination in the installation preview.",3),
-            label("Destination folder:",1),{kind="input",id="destination",text=w.destination,size=2},
-            label(w.error or "Choose a folder, then click Next to begin Setup.",3),
-            label("This is a simulated copy. No files are written to C:; programs run from this disk.",3)}
+        content={heading("Choose Destination Location"),label("Choose a destination for the installation preview.",3),
+            label("Destination folder (preview):",1),{kind="input",id="destination",text=w.destination,size=2,size_px=26},
+            label(w.error or "To begin copying files, click Next.",2),
+            label("Programs stay on the disk and are removed when you eject it.",3)}
     elseif w.stage=="copying" or w.stage=="failed" then
         local files={"SETUP.INF","WIPPY.EXE","README.TXT","PROGRAM.DAT","REGISTRY.DAT"}
         local file=files[math.min(#files,math.floor(w.percent/20)+1)]
         content={heading(w.stage=="failed" and "Setup could not finish" or "Copying Files…"),
-            label("Source: A:\\"..tostring(source),2),label("Destination: "..w.destination..file,3),
+            label("Source:",1),label("A:\\"..tostring(source),1),label("Destination:",1),label(w.destination..file,2),
             {kind="gauge",id="copy_progress",orient="horizontal",value=w.percent,ceiling=100,size=2,size_px=26},
-            {kind="label",text=tostring(w.percent).."%",align="center",size=1},
+            {kind="label",text=tostring(w.percent).."%",align="center",size=1,size_px=18},
             label(w.error or (w.percent==99 and "Updating system configuration…" or "Please wait while Setup copies the program files."),3)}
     elseif w.stage=="finish" then
         content={heading("Setup Complete"),label("Setup has finished setting up "..w.name..".",3),
             label("Would you like to restart your computer now?",2),
-            {kind="radio",id="restart_now",text="Yes, I want to restart my computer now.",checked=false,disabled=true,size=2},
-            {kind="radio",id="restart_later",text="No, I will restart my computer later.",checked=true,size=2},
-            label("No restart is required. Click Finish to return to your floppy disk.",3)}
+            {kind="radio",id="restart_now",text="Yes, I want to restart my computer now.",checked=false,disabled=true,size=1,size_px=24},
+            {kind="radio",id="restart_later",text="No, I will restart my computer later.",checked=true,size=1,size_px=24},
+            label("Click Finish to return to your floppy disk.",2)}
 
     end
     local next_text=w.stage=="finish" and "Finish" or (w.stage=="failed" and "Retry" or "Next >")
-    return {kind="column",padding=1,padding_px=12,gap=0,children={
-        {kind="row",gap=2,gap_px=18,children={
-            {kind="group",style="sunken",background="#008080",size=12,size_px=120,children={icon("my_computer"),icon("floppy"),icon("drive")}},
+    return {kind="column",padding=1,padding_px=10,gap=0,children={
+        {kind="row",gap=2,gap_px=16,children={
+            {kind="group",style="sunken",background="#55a6a8",size=14,size_px=140,children={{kind="picture",image="chicago.floppy:images/setup",text="WIPPY\nSETUP",fill=true,align="center"}}},
             {kind="column",gap=0,children=content},
         }},
         {kind="separator",size=1,size_px=16},

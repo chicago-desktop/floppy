@@ -28,7 +28,7 @@ local function define_tests()
             test.is_true(found, "Explorer discovers the drive provider")
             local view = assert(tty.viewport({width = 62, height = 22}))
             local pid = assert(process.with_options({terminal = assert(view:grant())})
-                :spawn_monitored("chicago.floppy:window", "app:processes"))
+                :spawn_monitored("chicago.floppy:window", "app:processes",{path="hello.wapp"}))
             local function wait_for(text, budget)
                 local shown = ""
                 local deadline = time.now():unix_nano() + (budget or 5)*1000000000
@@ -40,7 +40,7 @@ local function define_tests()
                 end
                 error("Window did not show " .. text .. ":\n" .. shown)
             end
-            local layout_state=window.definition.init()
+            local layout_state=window.definition.init({path="hello.wapp"})
             local function click(id)
                 local state = layout_state
                 local plan = ui.plan(window.definition.view(state), 62, 22, ui.interaction())
@@ -53,7 +53,7 @@ local function define_tests()
             click("insert")
             wait_for("Chicago Demo Disk")
             click("setup")
-            wait_for("Welcome to the Wippy Setup Wizard")
+            wait_for("Welcome to Wippy Setup")
             layout_state.wizard=setup.new("Chicago Demo Disk")
             click("setup_next")
             wait_for("Choose Destination Location")
@@ -77,7 +77,7 @@ local function define_tests()
 
         test.it("reads the demo through package FS, renders it, ejects and reinserts", function()
             local definition = window.definition
-            local state = definition.init()
+            local state = definition.init({path="hello.wapp"})
             local context = {width = 62, height = 22, stay = function() end}
             local before = assert(registry.find({[".kind"] = "function.lua"}))
             definition.update(state, {type = "activate", id = "insert"}, context)
@@ -123,7 +123,7 @@ local function define_tests()
             test.is_nil(state.package)
         end)
         test.it("keeps the 99 percent pause cancellable and commits only once after ten seconds",function()
-            local state=window.definition.init()
+            local state=window.definition.init({path="hello.wapp"})
             local clock:any={now=1000}
             state.now=function() return clock.now end
             local context={stay=function() end}
@@ -158,7 +158,7 @@ local function define_tests()
             window.definition.dispose(state)
         end)
         test.it("reports registration failures and renders every wizard page at two pixel sizes",function()
-            local state=window.definition.init()
+            local state=window.definition.init({path="hello.wapp"})
             local clock:any={now=0}
             state.now=function() return clock.now end
             local context={stay=function() end}
@@ -182,18 +182,18 @@ local function define_tests()
                 test.is_nil(ui.problem(tree))
                 for _,cell in ipairs({{8,16},{10,20}}) do
                     local interaction=ui.interaction()
-                    local plan=ui.plan(tree,62,22,interaction,{cell={w=cell[1],h=cell[2]}})
+                    local plan=ui.plan(tree,52,20,interaction,{cell={w=cell[1],h=cell[2]}})
                     test.not_nil(plan.by_id.setup_next)
                     if stage=="finish" then test.is_true(plan.by_id.restart_now.node.disabled);test.is_true(plan.by_id.restart_later.node.checked) end
                     for _,item in ipairs(plan.items) do
                         if item.node.kind=="image" then
                             test.is_true(item.rect.w*cell[1]>=32 and item.rect.h*cell[2]>=32,"sidebar icons fit at "..stage.." "..cell[1])
                         end
-                        test.is_true(item.rect.x>=1 and item.rect.y>=1 and item.rect.x+item.rect.w<=63 and item.rect.y+item.rect.h<=23)
+                        test.is_true(item.rect.x>=1 and item.rect.y>=1 and item.rect.x+item.rect.w<=53 and item.rect.y+item.rect.h<=21)
                     end
                     local store=rasters.store();store.begin()
                     local image=assert(render.placement({id="setup",state_revision=1,content_state={sdk=1,revision=1,interaction=interaction,ui=tree}},
-                        {x=1,y=1,cols=62,rows=22},{w=cell[1],h=cell[2]},fonts,store))
+                        {x=1,y=1,cols=52,rows=20},{w=cell[1],h=cell[2]},fonts,store))
                     assert(assert(fs.get("app:shots")):writefile("setup_"..stage.."_"..tostring(cell[1])..".png",assert(image.raster:encode("png"))))
                 end
             end

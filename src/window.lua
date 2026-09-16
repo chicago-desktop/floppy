@@ -5,9 +5,9 @@ local time = require("time")
 local setup = require("setup")
 local model = require("model")
 local definition = {interval="200ms",close_on_escape=true}
-function definition.init(): any
+function definition.init(args: any?): any
     local state = session.new()
-    state.path, state.selected = "hello.wapp", 1
+    state.path, state.selected = model.valid_path(args and args.path) and args.path or "ski.wapp", 1
     state.now = function() return time.now():unix_nano()/1000000 end
     return state
 end
@@ -35,9 +35,16 @@ end
 function definition.update(state: any, action: any, context: any): any
     if action.type == "change" and action.id == "path" then state.path = tostring(action.value or ""); return true end
     if action.type == "select" and action.id == "entries" then state.selected = action.index; return true end
-    if action.type == "close" then
+    if action.type=="tick" and state.ejecting then
+        local ok,err=session.eject(state)
+        if ok and state.close_after_eject then context.close()
+        elseif not ok then state.status=tostring(err) end
+        return true
+    end
+    if action.type == "close" or (not state.wizard and action.type=="key" and action.key_type=="esc") then
         local ok, err = session.eject(state)
-        if not ok then state.status = tostring(err); context.stay() end
+        if not ok then state.wizard=nil;state.status = tostring(err);state.close_after_eject=true;context.stay()
+        elseif action.type=="key" then context.close() end
         return true
     end
     local w=state.wizard

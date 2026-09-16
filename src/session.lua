@@ -3,11 +3,16 @@ local registry = require("registry")
 local uuid = require("uuid")
 local funcs = require("funcs")
 local model = require("model")
+local desktop = require("desktop")
+local json = require("json")
 local session = {}
 function session.new(): any
     local token = assert(uuid.v4()):gsub("-", "")
     return {owner = "chicago.floppy:" .. token, namespace = "chicago.floppy.disk_" .. token,
-        status = "Insert a disk to begin.", contents = "Drive is empty.", registered = false}
+        status = "Insert a disk to begin.", contents = "Drive is empty.", registered = false, windows = {},
+        open_window=function(spec) return desktop.open_wait(spec,{timeout="1s"}) end,
+        list_windows=function() return desktop.list({timeout="300ms"}) end,
+        close_window=function(id) return desktop.close(id,{force=true}) end}
 end
 function session.insert(state: any, source: any, path: string): (boolean, any)
     if state.package then return false, "Eject the current disk first." end
@@ -69,6 +74,14 @@ function session.run(state: any, index: integer): (boolean, any)
     if not state.registered then return false, "Register the disk first." end
     local entry = state.loaded[index]
     if not entry then return false, "Select a program." end
+    if (entry.meta or {}).floppy_window=="canvas.v1" then
+        local opened,why=state.open_window({entry="chicago.floppy:program",title=entry.meta.title,
+            window_type="tool",args=json.encode({entry=entry.id,title=entry.meta.title})})
+        if not opened then return false,tostring(why) end
+        state.windows[#state.windows+1]=opened.id
+        state.status="Playing "..entry.meta.title..". Keep the disk inserted."
+        return true,nil
+    end
     state.busy = true
     local called, result, err = pcall(funcs.call, entry.id)
     state.busy = false
@@ -79,6 +92,23 @@ function session.run(state: any, index: integer): (boolean, any)
 end
 function session.eject(state: any): (boolean, any)
     if state.busy then return false, "The disk is in use." end
+    if #(state.windows or {})>0 then
+        local answer,why=state.list_windows()
+        if not answer then return false,tostring(why) end
+        local alive={}
+        for _,window in ipairs(answer.windows or {}) do alive[window.id]=true end
+        local remaining={}
+        for _,id in ipairs(state.windows) do
+            if alive[id] then
+                local sent,err=state.close_window(id)
+                if not sent then return false,tostring(err) end
+                remaining[#remaining+1]=id
+            end
+        end
+        state.windows=remaining
+        if #remaining>0 then state.ejecting=true;return false,"Closing disk programs…" end
+    end
+    state.ejecting=false
     if state.registered then
         local overlay, err = registry.overlay(tostring(state.owner))
         if not overlay then return false, tostring(err) end
