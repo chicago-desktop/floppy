@@ -50,7 +50,7 @@ func main() {
     out, err := os.Create(os.Args[1])
     if err != nil { panic(err) }
     files := fstest.MapFS{
-        "README.txt": &fstest.MapFile{Data: []byte("My first disk. Register, then Run Hello.")},
+        "README.txt": &fstest.MapFile{Data: []byte("My first disk. Run Setup, then Run Hello.")},
     }
     entries := []wapp.Entry{{
         ID: wapp.NewID("demo", "hello"),
@@ -84,7 +84,9 @@ produces a compatible floppy.
 2. Use a runtime with `hub.open(fs, path)` and `registry.overlay(owner)`.
 3. As an administrator, open My Computer → 3½ Floppy (A:).
 4. Enter `my-disk.wapp` and click Insert. Check the label and README.
-5. Click Register, select Hello, then Run. Check the expected returned string.
+5. Click Setup, continue through the destination page and wait for copying, including
+   the ten-second pause at 99%. Click Finish, select Hello, then Run. Check the
+   expected returned string.
 6. Click Eject. Check that the temporary functions are removed. Reinsert to
    verify that the same disk still works.
 
@@ -92,7 +94,10 @@ The filename must be a basename ending in `.wapp`, at most 128 characters, using
 letters, digits, underscores, hyphens or dots, and starting with a letter,
 digit, underscore or hyphen. Paths such as `../my-disk.wapp` are rejected.
 
-Insert only opens and inspects the archive. Register validates all executable
+The wizard's destination and copying are simulated; no files are written to C:.
+The completion screen never restarts the desktop or operating system.
+
+Insert only opens and inspects the archive. Setup validates all executable
 entries, then remaps them into a fresh `chicago.floppy.disk_<uuid>` namespace.
 Do not hard-code original IDs for calls between disk programs. Each drive
 window owns its own mount; ejecting one does not remove another window's mount.

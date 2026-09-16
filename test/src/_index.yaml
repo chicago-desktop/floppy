@@ -107,6 +107,7 @@ entries:
       window: chicago.floppy:window
       session: chicago.floppy:session
       model: chicago.floppy:model
+      setup: chicago.floppy:setup
       sources: chicago.shell.explorer:sources
       ui: chicago.shell.sdk:ui
       render: chicago.shell.sdk:render

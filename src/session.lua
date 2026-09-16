@@ -43,7 +43,7 @@ function session.insert(state: any, source: any, path: string): (boolean, any)
     state.package, state.entries, state.resources = package, entries, resources
     state.label = tostring(metadata.name or path)
     state.contents = table.concat(contents, "\n")
-    state.status = "Disk inserted. Register to enable its programs."
+    state.status = "Disk inserted. Run Setup to enable its programs."
     return true, nil
 end
 function session.register(state: any): (boolean, any)

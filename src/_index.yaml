@@ -8,7 +8,7 @@ entries:
   - name: shell
     kind: ns.dependency
     component: github.com/chicago-desktop/shell
-    version: ">=0.2.5"
+    version: ">=0.3.3"
   - name: disks
     kind: fs.directory
     base: module
@@ -29,10 +29,12 @@ entries:
       resizable: true
       pixel_render: chicago.shell.sdk:render
       pixel_state: chicago.floppy:window
-    modules: [hub, fs, registry, uuid, funcs]
+    modules: [hub, fs, registry, uuid, funcs, time]
     imports:
       app: chicago.shell.sdk:app
       session: chicago.floppy:session
+      setup: chicago.floppy:setup
+      model: chicago.floppy:model
     security:
       policies: [chicago.shell.security:view_state, chicago.floppy:disk_access, chicago.floppy:package_access, chicago.floppy:overlay_access]
   - name: disk_access
@@ -57,6 +59,9 @@ entries:
     data:
       entry: chicago.floppy:window
 
+  - name: setup
+    kind: library.lua
+    source: file://setup.lua
   - name: model
     kind: library.lua
     source: file://model.lua

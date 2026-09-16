@@ -20,7 +20,7 @@ entries:
       order: 210
       title: "Run a program from a disk"
     data:
-      text: "After inserting a compatible WAPP disk, click Register, select a program, and click Run. Register makes its programs available temporarily; inserting the disk alone does not run them."
+      text: "After inserting a compatible WAPP disk, click Setup and follow the wizard. The progress bar pauses at 99% for ten seconds. Click Finish, select a program, and click Run. Setup enables programs temporarily until you eject the disk."
       image: floppy
       open: chicago.floppy:window
   - name: eject

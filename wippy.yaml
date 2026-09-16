@@ -1,6 +1,6 @@
 organization: chicago
 module: floppy
-description: Virtual floppy drive with temporary executable WAPP mounts.
+description: Virtual floppy drive with a retro Setup Wizard and temporary executable WAPP mounts.
 license: MIT
 exclude_meta:
   type: [test]
