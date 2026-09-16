@@ -13,7 +13,7 @@ From the application directory, stop its existing runtime and start:
 ./bin/wippy-floppy run -c
 ```
 
-Open My Computer, then 3 1/2 Floppy (A:) under an administrator account.
+Open My Computer, then 3½ Floppy (A:) under an administrator account.
 The filename starts as `hello.wapp`. Press Insert, Register, Run, then Eject.
 The demo returns a greeting in the drive window. Other disk files can be placed
 in `disks/` and selected by basename in the filename field.

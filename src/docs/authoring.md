@@ -82,7 +82,7 @@ produces a compatible floppy.
 1. Copy `my-disk.wapp` into the directory exposed by `chicago.floppy:disks`
    (the local module's `disks/` directory in the current setup).
 2. Use a runtime with `hub.open(fs, path)` and `registry.overlay(owner)`.
-3. As an administrator, open My Computer → 3 1/2 Floppy (A:).
+3. As an administrator, open My Computer → 3½ Floppy (A:).
 4. Enter `my-disk.wapp` and click Insert. Check the label and README.
 5. Click Register, select Hello, then Run. Check the expected returned string.
 6. Click Eject. Check that the temporary functions are removed. Reinsert to

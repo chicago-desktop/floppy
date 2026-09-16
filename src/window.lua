@@ -11,7 +11,7 @@ function definition.view(state: any): any
     local entries = {}
     for _, entry in ipairs(state.entries or {}) do entries[#entries + 1] = tostring((entry.meta or {}).title or entry.id) end
     return {kind = "column", padding = 1, gap = 1, children = {
-        {kind = "label", size = 1, text = state.label or "3 1/2 Floppy (A:)"},
+        {kind = "label", size = 1, text = state.label or "3½ Floppy (A:)"},
         {kind = "input", id = "path", size = 2, text = state.path, disabled = state.package ~= nil},
         {kind = "row", size = 2, gap = 1, children = {
             {kind = "button", id = "insert", text = "Insert", disabled = state.package ~= nil},

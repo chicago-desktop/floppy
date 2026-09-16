@@ -10,8 +10,8 @@ entries:
       order: 200
       title: "Try a floppy disk"
     data:
-      text: "Open My Computer and then 3 1/2 Floppy (A:). In the prototype, choose hello.wapp and click Insert to read its label and README. Opening the drive requires an administrator account."
-      image: drive
+      text: "Open My Computer and then 3½ Floppy (A:). In the prototype, choose hello.wapp and click Insert to read its label and README. Opening the drive requires an administrator account."
+      image: floppy
       open: chicago.floppy:window
   - name: run
     kind: registry.entry
@@ -21,7 +21,7 @@ entries:
       title: "Run a program from a disk"
     data:
       text: "After inserting a compatible WAPP disk, click Register, select a program, and click Run. Register makes its programs available temporarily; inserting the disk alone does not run them."
-      image: drive
+      image: floppy
       open: chicago.floppy:window
   - name: eject
     kind: registry.entry
@@ -31,7 +31,7 @@ entries:
       title: "Eject when you are done"
     data:
       text: "Click Eject to remove this disk\u2019s temporary programs and close the package. Closing the drive window normally does the same. A program must finish before its disk can be ejected."
-      image: drive
+      image: floppy
       open: chicago.floppy:window
   - name: format
     kind: registry.entry
@@ -41,5 +41,5 @@ entries:
       title: "Small programs, one disk"
     data:
       text: "The floppy prototype runs standalone Lua functions from WAPP files. It does not yet install full desktop applications. Agents can find the authoring guide in the readme of chicago.floppy:definition."
-      image: drive
+      image: floppy
       open: chicago.floppy:window

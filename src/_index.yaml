@@ -20,8 +20,8 @@ entries:
     method: main
     meta:
       type: tui_desktop.window
-      title: 3 1/2 Floppy (A:)
-      image: drive
+      title: 3½ Floppy (A:)
+      image: floppy
       in_menu: false
       requires: chicago.admin
       width: 64
@@ -51,8 +51,8 @@ entries:
     kind: registry.entry
     meta:
       type: chicago.drive
-      title: 3 1/2 Floppy (A:)
-      image: drive
+      title: 3½ Floppy (A:)
+      image: floppy
       order: 10
     data:
       entry: chicago.floppy:window
