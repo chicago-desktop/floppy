@@ -54,6 +54,8 @@ local function define_tests()
             test.is_nil(registry.get(entry))
         end)
         test.it("renders the disk-owned game through the window host and rejects oversized frames",function()
+            local meta=assert(registry.get("chicago.floppy:program")).meta
+            test.is_true(meta.presentation);test.is_true(meta.presentation_interactive)
             local disk=mount()
             local state=program.definition.init({entry=disk.loaded[1].id,title="Ski"})
             test.is_nil(state.failure)
@@ -66,8 +68,8 @@ local function define_tests()
             local fonts={face=assert(gfx.font(assert(font_files:readfile("LiberationSans-Regular.ttf")),{size=13,smooth=true}))}
             local store=rasters.store();store.begin()
             local image=assert(render.placement({id="ski",state_revision=1,content_state={sdk=1,revision=1,ui=tree}},
-                {x=1,y=1,cols=56,rows=22},{w=10,h=20},fonts,store))
-            assert(assert(fs.get("app:shots")):writefile("ski.png",assert(image.raster:encode("png"))))
+                {x=1,y=1,cols=100,rows=40},{w=10,h=20},fonts,store))
+            assert(assert(fs.get("app:shots")):writefile("ski-fullscreen.png",assert(image.raster:encode("png"))))
             state.call=function() return {canvas={width=99999,height=256,rects={}}} end
             program.definition.update(state,{type="activate",id="restart"},{})
             test.not_nil(state.failure)

@@ -8,7 +8,8 @@ with `hub.open(fs, path)` and `registry.overlay(owner)`.
 
 Install the published module in the Chicago application and restart the desktop.
 Open My Computer, then 3½ Floppy (A:) under an administrator account.
-The filename starts as `ski.wapp`. Press **Insert → Setup…**.
+In **Included disks**, select **Ski — Downhill Adventures**. Its filename, size
+and description appear below the list. Press **Insert Disk → Setup…**.
 
 The Wippy Setup Wizard follows the classic installation ceremony:
 
@@ -25,7 +26,9 @@ The Wippy Setup Wizard follows the classic installation ceremony:
 
 Select **Ski** and click **Run** to open the game.
 **Eject** closes its game windows and removes its temporary programs. Other disks
-can be placed in `disks/` and selected by basename. The older `hello.wapp` is
+can be placed in the application's `.wippy/floppy/` folder, then selected under
+**My disks → Refresh**. On a remote installation, copy them to the server.
+**Add Disks…** explains this in the drive window. The older `hello.wapp` is
 still included as a minimal authoring example.
 
 The copy animation and destination are nostalgic presentation: Setup writes no
@@ -109,3 +112,21 @@ in the registry as `chicago.floppy:definition` → `readme`.
 
 The module also contributes four `chicago.tip` entries. Welcome discovers them
 automatically and its Show Me button opens the drive.
+
+### Full-screen play
+
+Canvas disk programs such as Ski launch across the entire terminal, without a
+window frame or taskbar. The picture scales to fit while keeping its aspect
+ratio. Arrow keys steer, Space starts or pauses, R starts a new run, and **Esc**
+closes the game and returns to the drive. Ejecting the disk also closes the game.
+This uses the interactive presentation API from tui-desktop 0.2.4 or newer.
+
+## Disk library
+
+**Included disks** lists the module's read-only bundled examples. **My disks**
+reads `chicago.floppy:library`, a project-based filesystem at `.wippy/floppy/`.
+This directory is independent of the module cache and survives module updates.
+Only `.wapp` filenames appear, sorted by package title; invalid or oversized
+packages remain visible with an error and cannot be inserted. Refresh rescans
+the selected source. Reading the catalog never registers or executes entries.
+A browser upload and downloading by URL are not implemented.

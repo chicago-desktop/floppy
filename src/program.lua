@@ -47,7 +47,7 @@ function definition.view(state: any): any
     return {kind="column",gap=0,children={
         {kind="statusbar",size=1,fields={{text="Distance: "..tostring(frame.score or "0 m")},{text="Lives: "..tostring(frame.lives or 0)},{text="Best: "..tostring(frame.best or 0).." m"}}},
         {kind="picture",png=state.png,fit="contain",fill=true,background="#ffffff",text="Ski needs pixel graphics (Kitty or Sixel)."},
-        frame.active and {kind="label",size=2,text="← → Steer     Space Pause     R New Run",align="center"}
+        frame.active and {kind="label",size=2,text="← → Steer     Space Pause     R New Run     Esc Exit",align="center"}
             or {kind="row",size=2,gap=1,children={{kind="button",id="pause",text="Start / Resume",disabled=frame.can_resume==false},{kind="button",id="restart",text="New Run"}}},
         {kind="label",size=2,text=state.failure or frame.status or "",wrap=true,alert=state.failure~=nil},
     }}

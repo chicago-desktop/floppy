@@ -4,10 +4,13 @@ local fs = require("fs")
 local time = require("time")
 local setup = require("setup")
 local model = require("model")
+local catalog = require("catalog")
 local definition = {interval="200ms",close_on_escape=true}
 function definition.init(args: any?): any
     local state = session.new()
     state.path, state.selected = model.valid_path(args and args.path) and args.path or "ski.wapp", 1
+    state.disk_source="bundled"
+    catalog.refresh(state)
     state.now = function() return time.now():unix_nano()/1000000 end
     return state
 end
@@ -16,13 +19,20 @@ function definition.title(state: any): string
 end
 function definition.view(state: any): any
     if state.wizard then return setup.view(state.wizard,state.path) end
+    if state.add_help then
+        return {kind="column",padding=1,gap=1,children={
+            {kind="label",size=2,text="Add your own floppy disks"},
+            {kind="label",fill=true,wrap=true,text="1. Copy your .wapp file into:\n   .wippy/floppy/\n   (inside the Wippy application folder)\n\n2. Choose My disks, then Refresh.\n3. Select the disk and press Insert Disk.\n\nRunning Wippy on a server? Copy the file there. This is not a browser upload.\n\nUse Wippy .wapp packages, not Windows .exe files. Maximum size: 8 MB."},
+            {kind="button",id="help_done",size=2,text="Back to Disks"},
+        }}
+    end
+    if not state.package then return catalog.view(state) end
     local entries = {}
     for _, entry in ipairs(state.entries or {}) do entries[#entries + 1] = tostring((entry.meta or {}).title or entry.id) end
     return {kind = "column", padding = 1, gap = 1, children = {
         {kind = "label", size = 1, text = state.label or "3½ Floppy (A:)"},
-        {kind = "input", id = "path", size = 2, text = state.path, disabled = state.package ~= nil},
+        {kind = "label", size = 1, text = "Inserted: "..tostring(state.path)},
         {kind = "row", size = 2, gap = 1, children = {
-            {kind = "button", id = "insert", text = "Insert", disabled = state.package ~= nil},
             {kind = "button", id = "setup", text = "Setup…", disabled = state.package == nil or state.registered},
             {kind = "button", id = "run", text = "Run", disabled = not state.registered},
             {kind = "button", id = "eject", text = "Eject", disabled = state.package == nil},
@@ -33,7 +43,21 @@ function definition.view(state: any): any
     }}
 end
 function definition.update(state: any, action: any, context: any): any
-    if action.type == "change" and action.id == "path" then state.path = tostring(action.value or ""); return true end
+    if state.add_help then
+        if (action.type=="activate" and action.id=="help_done") or (action.type=="key" and action.key_type=="esc") then
+            state.add_help=false;return true
+        end
+        if action.type~="close" then return false end
+    end
+    if not state.package and action.type=="change" and action.id=="disk_source" then
+        state.disk_source=action.value=="personal" and "personal" or "bundled"
+        catalog.refresh(state);return true
+    end
+    if not state.package and action.type=="select" and action.id=="disks" then
+        local disk=state.disks[tonumber(action.index) or 0]
+        if disk then state.disk_selected=action.index;state.path=disk.path end
+        return true
+    end
     if action.type == "select" and action.id == "entries" then state.selected = action.index; return true end
     if action.type=="tick" and state.ejecting then
         local ok,err=session.eject(state)
@@ -88,8 +112,13 @@ function definition.update(state: any, action: any, context: any): any
     end
     if action.type ~= "activate" then return false end
     local ok, err
-    if action.id == "insert" then
-        local source, why = fs.get("chicago.floppy:disks")
+    if action.id=="add_disks" and not state.package then state.add_help=true;return true
+    elseif action.id=="refresh_disks" and not state.package then catalog.refresh(state);return true
+    elseif action.id == "insert" then
+        local disk=(state.disks or {})[state.disk_selected or 0]
+        if not disk or disk.error then return false end
+        state.path=disk.path
+        local source, why = fs.get(tostring(disk.resource))
         if not source then state.status = tostring(why); return true end
         ok, err = session.insert(state, source, tostring(state.path))
     elseif action.id == "setup" then

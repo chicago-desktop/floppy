@@ -10,7 +10,7 @@ entries:
       order: 200
       title: "Try a floppy disk"
     data:
-      text: "Open My Computer and then 3½ Floppy (A:). In the prototype, choose ski.wapp and click Insert to read its label and README. Opening the drive requires an administrator account."
+      text: "Open My Computer and then 3½ Floppy (A:). Choose Ski under Included disks and click Insert Disk to read its label and README. To add your own WAPP, use Add Disks for instructions and My disks to select it. Opening the drive requires an administrator account."
       image: floppy
       open: chicago.floppy:window
   - name: run
@@ -30,7 +30,7 @@ entries:
       order: 220
       title: "Eject when you are done"
     data:
-      text: "Click Eject to remove this disk\u2019s temporary programs and close the package. Closing the drive window normally does the same. A program must finish before its disk can be ejected."
+      text: "Click Eject to remove this disk\u2019s temporary programs and close the package. Closing the drive window normally does the same. Ejecting closes this disk’s game windows before removing its programs."
       image: floppy
       open: chicago.floppy:window
   - name: format
@@ -40,6 +40,6 @@ entries:
       order: 230
       title: "Small programs, one disk"
     data:
-      text: "Try Ski from ski.wapp: Left and Right steer, Space pauses, and R starts a new run. The game lives on the disk, which must stay inserted. Agents can find the authoring guide in the readme of chicago.floppy:definition."
+      text: "Try Ski from ski.wapp: Left and Right steer, Space pauses, and R starts a new run. The game opens full-screen; Esc returns to the drive. The game lives on the disk, which must stay inserted. Agents can find the authoring guide in the readme of chicago.floppy:definition."
       image: floppy
       open: chicago.floppy:window

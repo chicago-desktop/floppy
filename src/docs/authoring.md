@@ -79,11 +79,12 @@ produces a compatible floppy.
 
 ## Try and verify
 
-1. Copy `my-disk.wapp` into the directory exposed by `chicago.floppy:disks`
-   (the local module's `disks/` directory in the current setup).
+1. Copy `my-disk.wapp` into the application's `.wippy/floppy/` directory, exposed by
+   `chicago.floppy:library`. On a server installation, copy the file to the server.
 2. Use a runtime with `hub.open(fs, path)` and `registry.overlay(owner)`.
 3. As an administrator, open My Computer → 3½ Floppy (A:).
-4. Enter `my-disk.wapp` and click Insert. Check the label and README.
+4. Choose **My disks → Refresh**, select your disk, then click **Insert Disk**.
+   Check the label and README.
 5. Click Setup, continue through the destination page and wait for copying, including
    the ten-second pause at 99%. Click Finish, select Hello, then Run. Check the
    expected returned string.
